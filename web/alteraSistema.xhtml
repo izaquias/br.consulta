@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:include src="menu.xhtml"/>
+        
+        <h:form id="alteraSistema">
+            <p:fieldset legend="Alterar Sistema">
+               
+                <p:panelGrid columns="2">
+
+                    <p:outputLabel for="login"  value="Login:"/>
+                    <p:inputText id="login" value="#{SistemaBean.sistemas.login}"/>
+
+                    <p:outputLabel for="senha" value="Senha:"/>
+                    <p:inputText id="senha" value="#{SistemaBean.sistemas.senha}"/>
+                </p:panelGrid>
+
+                <p:commandButton value="Alterar" oncomplete="PF('widDial').show()"/>
+                <p:commandButton value="Cancelar" action="menu.xhtml"/>
+            </p:fieldset>
+            <p:dialog id="dial" modal="true" resizable="false"  visible="false" widgetVar="widDial">
+                
+                <f:facet name="header">
+                    Atenção!!!
+                </f:facet>
+                <p:outputLabel value="Realmente quer alterar este login de usuário?"/>
+                
+                <f:facet name="footer">
+                    <p:commandButton value="sim" action="#{SistemaBean.alterar()}" style="color: lime" update="alteraSistema" oncomplete="PF('widDial').hide()"/>
+                    <p:commandButton value="não" style="position: relative;  left: 30%;" oncomplete="PF('widDial').hide()"/>
+                </f:facet>
+            </p:dialog>
+            
+        </h:form>
+    </h:body>
+</html>
+

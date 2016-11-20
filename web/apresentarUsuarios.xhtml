@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:include src="menu.xhtml"/>
+        
+        <h:form id="apresentaLogin">
+            <p:dataTable id="tabela" var="atributo" value="#{SistemaBean.recuperarTodos()}"  paginator="true" rows="10" rowKey="#{atributo.id}"
+                         selectionMode="single">
+                <f:facet name="header">
+                    Login dos Pacientes Cadastrados
+                </f:facet> 
+                
+                <p:column headerText="Login">
+                    <h:outputText value="#{atributo.id}"/>
+                </p:column>
+                <p:column headerText="Login">
+                    <h:outputText value="#{atributo.login}"/>
+                </p:column>
+                <p:column headerText="Senha">
+                    <h:outputText value="#{atributo.senha}"/>
+                </p:column>
+                <p:column headerText="Operações" style="width: 13%">
+                    <p:commandButton icon="ui-icon-search" oncomplete="PF('widDialVisualiza').show()"
+                                     update=':apresentaLogin:dialVisualiza' title="visualizar">
+                        <f:setPropertyActionListener value="#{atributo}" target="#{SistemaBean.sistemas}"/>
+                    </p:commandButton>
+                    <p:commandButton icon='ui-icon-pencil' action="alteraSistema.xhtml" title="alterar"  oncomplete="PF('widDialVisualiza').show()">
+                        <f:setPropertyActionListener value="#{atributo}" target="#{SistemaBean.sistemas}"/>
+                    </p:commandButton>
+                    <p:commandButton icon='ui-icon-closethick' oncomplete="PF('widDialDeleta').show()" title="deletar">
+                        <f:setPropertyActionListener value="#{atributo}" target="#{SistemaBean.sistemas}"/>
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+            <p:dialog id="dialVisualiza" visible="false" resizable="false" modal="true" widgetVar="widDialVisualiza">
+
+                <p:panelGrid columns="2">
+                    <h:outputText value="Login:"/>
+                    <h:outputText value="#{SistemaBean.sistemas.login}"/>
+
+                    <h:outputText value="Senha:"/>
+                    <h:outputText value="#{SistemaBean.sistemas.senha}"/>
+
+
+                </p:panelGrid>
+
+            </p:dialog>
+
+            <p:confirmDialog message="Deseja realmente deletar este login de usuário?" visible="false" id="dialDeleta" widgetVar="widDialDeleta">
+                <p:commandButton id="butao" value="sim" action="#{SistemaBean.deletar()}" update=':apresentaLogin:tabela'
+                                 oncomplete="PF('widDialDeleta').hide()" />
+                <p:commandButton value="não" oncomplete="PF('widDialDeleta').hide()" />
+            </p:confirmDialog>
+
+        </h:form>
+    </h:body>
+</html>
+

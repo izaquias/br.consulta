@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:include src="menu.xhtml"/> 
+        <h:form id="apresentaMedicos">
+            <p:dataTable id="tabela" var="atributo" value="#{MedicoBean.recuperarTodos()}" rows="5" paginator="true">
+               
+                <f:facet name="header">
+                    Médicos cadastrados
+                </f:facet>
+                
+                <p:column headerText="CRM">
+                    <p:outputLabel value="#{atributo.crm}"/>
+                </p:column>
+                
+                <p:column headerText="Nome">
+                    <p:outputLabel value="#{atributo.nome}"/>
+                </p:column>
+                
+                <p:column headerText="Idade">
+                    <p:outputLabel value="#{atributo.idade}"/>
+                </p:column>
+                
+                <p:column headerText="Especialidade">
+                    <p:outputLabel value="#{atributo.especialidade}"/>
+                </p:column>
+                
+                <p:column headerText="Salario">
+                    <p:outputLabel value="#{atributo.salario}"/>
+                </p:column>
+                
+                 <p:column headerText="Operações" style="width: 13%">
+                    <p:commandButton icon="ui-icon-search" oncomplete="PF('widDialVisualiza').show()"
+                                     update=':apresentaMedicos:dialVisualiza' title="visualizar">
+                        <f:setPropertyActionListener value="#{atributo}" target="#{MedicoBean.medicos}"/>
+                    </p:commandButton>
+                    <p:commandButton icon='ui-icon-pencil' action="alteraMedico.xhtml" title="alterar"  oncomplete="PF('widDialVisualiza').show()">
+                        <f:setPropertyActionListener value="#{atributo}" target="#{MedicoBean.medicos}"/>
+                    </p:commandButton>
+                    <p:commandButton icon='ui-icon-closethick' oncomplete="PF('widDialDeleta').show()" title="deletar">
+                        <f:setPropertyActionListener value="#{atributo}" target="#{MedicoBean.medicos}"/>
+                    </p:commandButton>
+                </p:column>
+                
+            </p:dataTable> 
+            
+            <p:dialog id="dialVisualiza" visible="false" resizable="false" modal="true" widgetVar="widDialVisualiza">
+
+                <p:panelGrid columns="2">
+                    <h:outputText  value="CRM:"/>
+                    <h:outputText value="#{MedicoBean.medicos.crm}"/>
+
+                    <h:outputText value="Nome:"/>
+                    <h:outputText value="#{MedicoBean.medicos.nome}"/>
+                    
+                    <h:outputText value="Idade:"/>
+                    <h:outputText value="#{MedicoBean.medicos.idade}"/>
+                    
+                    <h:outputText value="Especialidade:"/>
+                    <h:outputText value="#{MedicoBean.medicos.especialidade}"/>
+                    
+                    <h:outputText value="Salário:"/>
+                    <h:outputText value="#{MedicoBean.medicos.salario}"/>
+                    
+                </p:panelGrid>
+
+            </p:dialog>
+            
+             <p:confirmDialog message="Deseja realmente deletar este médico?" visible="false" id="dialDeleta" widgetVar="widDialDeleta">
+                 <p:commandButton id="butao" value="sim" action="#{MedicoBean.deletar()}" update=':apresentaMedicos:tabela'
+                                 oncomplete="PF('widDialDeleta').hide()" />
+                <p:commandButton value="não" oncomplete="PF('widDialDeleta').hide()" />
+            </p:confirmDialog>
+            
+            
+        </h:form>
+    </h:body>
+</html>
+

@@ -1,0 +1,94 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+
+        <h:form  id="agendaConsulta">
+
+            <p:growl id="msgs" showDetail="true" />
+
+            <p:dataTable id="checkBox" var="atributo" value="#{ConsultaBean.pacienteSelected}" selection="#{ConsultaBean.pacientesList}" rowKey="#{atributo.SUS}" style="margin-bottom:0">
+                
+                <f:facet name="header">
+                    Checkbox
+                </f:facet>
+                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+
+                <p:column headerText="SUS">
+                    <h:outputText value="#{atributo.SUS}"/>
+                </p:column>
+
+                <p:column headerText="Nome" filterBy="#{PacienteBean.pacientes.nome}" filterMatchMode="startsWith"> 
+                    <h:outputText value="#{atributo.nome}"/>
+                </p:column>
+
+
+                <p:column headerText="Idade">
+                    <h:outputText value="#{atributo.idade}"/>
+                </p:column>
+
+                <p:column headerText="Endereço">
+                    <h:outputText value="#{atributo.endereco}"/>
+                </p:column>
+
+                <p:column headerText="Sintoma">
+                    <h:outputText value="#{atributo.sintoma}"/>
+                </p:column>
+            </p:dataTable>
+            <p:commandButton value="Selecionar" oncomplete="PF('multiPacienteDialog').show()" update="dialSeleciona"/>
+            
+            <f:facet name="footer">
+                Atenção!!!
+                <p:commandButton process="checkBox" update=":AgendaConsulta:multiPaciente" icon="ui-icon-search" value="ver" oncomplete="PF('multiPacienteDialog').show()"/>
+            </f:facet>
+            
+
+            <p:dialog id="dial" header="Informações dos Pacientes!" widgetVar="pacienteDial" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+
+                <p:outputPanel id="detalhePaciente" style="text-align:center;">
+
+                    <p:panelGrid columns="2" rendered="#{not empty ConsultaBean.pacientes}" columnClasses="label,value">
+
+                        <h:outputText value="SUS:"/>
+                        <h:outputText value="#{PacienteBean.pacientes.SUS}"/>
+
+                        <h:outputText value="Nome:"/>
+                        <h:outputText value="#{PacienteBean.pacientes.nome}"/>
+
+                        <h:outputText value="Idade:"/>
+                        <h:outputText value="#{PacienteBean.pacientes.idade}"/>
+
+                        <h:outputText value="Endereço:"/>
+                        <h:outputText value="#{PacienteBean.pacientes.endereco}"/>
+
+                        <h:outputText value="Sintoma:"/>
+                        <h:outputText value="#{PacienteBean.pacientes.sintoma}"/>
+
+                    </p:panelGrid>
+
+                </p:outputPanel>
+
+            </p:dialog>
+
+            <p:dialog id="dialSeleciona" header="Pacientes Selecionados!" widgetVar="multiPacienteDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="200">
+
+                <p:outputPanel  id="PacienteDetalhes" style="text-align:center;" >
+                    <ui:repeat value="#{ConsultaBean.pacientesList}" var="paciente">
+                        <h:outputText value="#{paciente.SUS} - #{paciente.nome}" style="display:block"/>
+                    </ui:repeat>
+
+                </p:outputPanel>
+            </p:dialog>
+
+        </h:form>
+
+    </h:body>
+</html>
+
