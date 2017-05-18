@@ -9,7 +9,9 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <ui:include src="menu.xhtml"/>
+        <ui:include src="menuPaciente.xhtml"/>
+        
+        
         <h:form id="alteraPaciente">
             <p:fieldset legend="Alterar Paciente">
                 
@@ -28,11 +30,17 @@
 
                     <p:outputLabel for="sintoma" value="Sintoma:"/>
                     <p:inputText id="sintoma" value="#{PacienteBean.pacientes.sintoma}"/>
+                    
+                    <p:outputLabel for="email" value="E-mail:"/>
+                    <p:inputText id="email" value="#{PacienteBean.pacientes.email}"/>
+                    
+                    <p:outputLabel for="senha" value="Senha:"/>
+                    <p:inputText id="senha" value="#{PacienteBean.pacientes.senha}"/>
 
                 </p:panelGrid>
 
                 <p:commandButton value="Alterar" icon="ui-icon-star" oncomplete="PF('widDial').show()" />
-                <p:commandButton value="Cancelar" action="menu.xhtml"/> 
+                <p:commandButton value="Cancelar" action="apresentaPaciente.xhtml" immediate="false"/> 
             </p:fieldset>
             <p:dialog id="dial" modal="true" resizable="false"  visible="false" widgetVar="widDial">
 
@@ -42,8 +50,8 @@
                 <p:outputLabel value="Realmente quer alterar esse Paciente?"/>
 
                 <f:facet name="footer">
-                    <p:commandButton value="Sim" action="#{PacienteBean.alterar()}" update="alteraPaciente" oncomplete="PF('WidDial').hide()" />
-                    <p:commandButton value="Não" style="position: relative; left: 30%" oncomplete="PF('WidDial').hide()"/>
+                    <p:commandButton value="Sim" action="#{PacienteBean.alterar()}" style="color: green" update="alteraPaciente" oncomplete="PF('WidDial').hide()" />
+                    <p:commandButton value="Não" style="position: relative; left: 50%; color: red" oncomplete="PF('WidDial').hide()"/>
                 </f:facet>
             </p:dialog>
 

@@ -10,16 +10,16 @@
     </h:head>
     <h:body>
          <ui:include src="menu.xhtml"/>
-        <h:form>
+        <h:form id="cadSistema">
             <p:messages id="mensages"/>
             <p:fieldset legend="Cadastro Sistema">
                 <p:panelGrid columns="3">
 
-                    <p:outputLabel for="login" value="Login:"/>
-                    <p:inputText id="login" value="#{SistemaBean.sistemas.login}"/><br/>
+                    <p:outputLabel for="login" value="E-mail:"/>
+                    <p:inputText id="login"  value="#{SistemaBean.sistemas.login}" required="true"/><br/>
 
-                    <p:outputLabel for="senha" value="Senha:"/>
-                    <p:inputText type="password" id="senha" value="#{SistemaBean.sistemas.senha}"/><br/>
+                    <p:outputLabel for="senha"  value="Senha:"/>
+                    <p:password id="senha" value="#{SistemaBean.sistemas.senha}" required="true"/><br/>
 
                     <p:commandButton value="cadastrar" icon="ui-icon-star" oncomplete="PF('widDial').show()"/>
                     
@@ -31,7 +31,7 @@
                         
                         <h:outputText value="Deseja realmente cadastrar esse referido login?"/><br/>
                     <f:facet name="footer">
-                        <p:commandButton value="sim" action="#{SistemaBean.inserir()}"/>
+                        <p:commandButton value="sim" action="#{SistemaBean.inserir()}" update="cadSistema"/>
                         <p:commandButton style="position: relative; left: 30%" value="não" oncomplete="PF('widDial').hide()"/>
                     </f:facet>
                     

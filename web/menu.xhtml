@@ -10,31 +10,23 @@
 
             <p:menubar>
                 <p:menuitem value="home" url="index.xhtml"/>
+                
+                <p:submenu label="Login">
+                    <p:menuitem value="Fazer Login" url="fazerLogin.xhtml"/>
+                </p:submenu>
 
                 <p:submenu label="Paciente">
                     <p:menuitem value="cadastrar" url="cadastroPacienteLogin.xhtml"/>
-                    <p:menuitem value="apresentar" url="apresentaPaciente.xhtml"/>
-                </p:submenu>
-
-
-                <p:submenu label="Sistema">
-                    <p:menuitem value="cadastrarUsuário" url="cadastroSistema.xhtml"/>
-                    <p:menuitem value="apresentarUsuarios" url="apresentarUsuarios.xhtml"/>
-                    
-
+                  
                 </p:submenu>
 
                 <p:submenu label="Médico">
                     <p:menuitem value="cadastrar" url="cadastroMedicoLogin.xhtml"/>
-                    <p:menuitem value="apresentar" url="apresentaMedico.xhtml"/>
+                
                 </p:submenu>
 
-                <p:submenu label="Consulta">
-                    <p:menuitem value="cadastrar" url="cadastroConsulta.xhtml"/>
-                    <p:menuitem value="agendar" url="agendaConsulta.xhtml"/>
-                    <p:menuitem value="HoráriosAtendimento" url="apresentaConsulta.xhtml"/>
-                </p:submenu>
                 
+               
             </p:menubar>
             <p:separator/>
         </h:form>

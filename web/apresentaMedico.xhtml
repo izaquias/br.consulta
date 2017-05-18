@@ -9,7 +9,9 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <ui:include src="menu.xhtml"/> 
+        
+        <ui:include src="menuMedico.xhtml"/> 
+        
         <h:form id="apresentaMedicos">
             <p:dataTable id="tabela" var="atributo" value="#{MedicoBean.recuperarTodos()}" rows="5" paginator="true">
                
@@ -17,11 +19,11 @@
                     Médicos cadastrados
                 </f:facet>
                 
-                <p:column headerText="CRM">
+                <p:column headerText="CRM" filterBy="#{atributo.crm}">
                     <p:outputLabel value="#{atributo.crm}"/>
                 </p:column>
                 
-                <p:column headerText="Nome">
+                <p:column headerText="Nome" filterBy="#{atributo.nome}">
                     <p:outputLabel value="#{atributo.nome}"/>
                 </p:column>
                 
@@ -32,9 +34,13 @@
                 <p:column headerText="Especialidade">
                     <p:outputLabel value="#{atributo.especialidade}"/>
                 </p:column>
-                
+                <!--
                 <p:column headerText="Salario">
                     <p:outputLabel value="#{atributo.salario}"/>
+                </p:column>
+                -->
+                <p:column headerText="E-mail">
+                    <h:outputText value="#{atributo.email}"/>
                 </p:column>
                 
                  <p:column headerText="Operações" style="width: 13%">
@@ -70,14 +76,16 @@
                     <h:outputText value="Salário:"/>
                     <h:outputText value="#{MedicoBean.medicos.salario}"/>
                     
+                    <h:outputText value="E-mail:"/>
+                    <h:outputText value="#{MedicoBean.medicos.email}"/>
                 </p:panelGrid>
 
             </p:dialog>
             
              <p:confirmDialog message="Deseja realmente deletar este médico?" visible="false" id="dialDeleta" widgetVar="widDialDeleta">
-                 <p:commandButton id="butao" value="sim" action="#{MedicoBean.deletar()}" update=':apresentaMedicos:tabela'
+                 <p:commandButton id="butao" value="sim" style="color: green" action="#{MedicoBean.deletar()}" update=':apresentaMedicos:tabela'
                                  oncomplete="PF('widDialDeleta').hide()" />
-                <p:commandButton value="não" oncomplete="PF('widDialDeleta').hide()" />
+                 <p:commandButton value="não" style="position: relative; left: 50%; color: red" oncomplete="PF('widDialDeleta').hide()" />
             </p:confirmDialog>
             
             

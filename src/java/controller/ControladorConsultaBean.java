@@ -5,6 +5,7 @@
  */
 package controller;
 
+//import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -14,9 +15,11 @@ import javax.faces.context.FacesContext;
 import model.Consulta;
 import model.Medico;
 import model.Paciente;
-import model.repository.RepositorioConsulta;
-import model.repository.RepositorioMedico;
-import model.repository.RepositorioPaciente;
+import model.Dao.DaoConsulta;
+import model.Dao.DaoMedico;
+import model.Dao.DaoPaciente;
+import org.primefaces.event.FlowEvent;
+import org.primefaces.event.SelectEvent;
 
 /**
  *
@@ -27,41 +30,79 @@ import model.repository.RepositorioPaciente;
 
 public class ControladorConsultaBean implements Controlador {
 
-    private RepositorioConsulta repositorio = null;
-    private RepositorioMedico repositorioMedico = null;
-    private RepositorioPaciente repositorioPaciente = null;
+    private DaoConsulta repositorio = null;
+    private DaoMedico repositorioMedico = null;
+    private DaoPaciente repositorioPaciente = null;
     private Consulta consultas;
     private Medico medicos;
     private Paciente pacientes;
-    private List<Paciente> pacientesList;
     private List<Paciente> pacienteSelected;
-
+    
+    private boolean skip;
+    
     public ControladorConsultaBean() {
 
     }
-   
 
     @PostConstruct
     public void Inicializar() {
-        repositorio = new RepositorioConsulta();
-        repositorioMedico = new RepositorioMedico();
-        repositorioPaciente = new RepositorioPaciente();
+        repositorio = new DaoConsulta();
+        repositorioMedico = new DaoMedico();
+        repositorioPaciente = new DaoPaciente();
 
         consultas = new Consulta();
         medicos = new Medico();
         pacientes = new Paciente();
-        pacienteSelected = repositorioPaciente.recuperarTodos();
+       
         //copiar todos os pacientes, para que sua referencia não seja nula, após fechar a trasação(usar for para resolver.)!
-        
-    }
-    
-    public void retornaSelecionados(){
-        
-       /* for(Paciente ){
-            
-        }*/
-    }
 
+    }
+     public boolean isSkip() {
+        return skip;
+    }
+ 
+    public void setSkip(boolean skip) {
+        this.skip = skip;
+    }
+     
+    public String onFlowProcess(FlowEvent event) {
+        if(skip) {
+            skip = false;   //reset in case user goes back
+            return "consulta";
+        }
+        else {
+            return event.getNewStep();
+        }
+    }
+/*
+    //método que clona uma lista para ser inserida!
+    public List<Paciente> retornaSelecionados() {
+        
+        List<Paciente> pacientAux = new ArrayList<>();
+
+        for (Paciente p : pacientesList) {
+
+            Paciente pAux = new Paciente();
+            pAux.setEndereco(p.getEndereco());
+            pAux.setIdade(p.getIdade());
+            pAux.setSUS(p.getSUS());
+            pAux.setSintoma(p.getSintoma());
+            pAux.setNome(p.getNome());
+            
+
+            pacientAux.add(pAux);
+        }
+        return pacientAux;
+    }*/
+    
+    public void changePacientes(SelectEvent selectEvent)
+{
+        Consulta consulta = (Consulta) selectEvent.getObject();
+        consultas = consulta;
+        long id;
+        id = consulta.getId();
+        consultas = recuperar(consultas.getId());
+}
     public List<Paciente> getPacienteSelected() {
         return pacienteSelected;
     }
@@ -78,27 +119,19 @@ public class ControladorConsultaBean implements Controlador {
         this.pacientes = pacientes;
     }
 
-    public List<Paciente> getPacientesList() {
-        return pacientesList;
-    }
-
-    public void setPacientesList(List<Paciente> pacientesList) {
-        this.pacientesList = pacientesList;
-    }
-
-    public RepositorioPaciente getRepositorioPaciente() {
+    public DaoPaciente getRepositorioPaciente() {
         return repositorioPaciente;
     }
 
-    public void setRepositorioPaciente(RepositorioPaciente repositorioPaciente) {
+    public void setRepositorioPaciente(DaoPaciente repositorioPaciente) {
         this.repositorioPaciente = repositorioPaciente;
     }
 
-    public RepositorioMedico getRepositorioMedico() {
+    public DaoMedico getRepositorioMedico() {
         return repositorioMedico;
     }
 
-    public void setRepositorioMedico(RepositorioMedico repositorioMedico) {
+    public void setRepositorioMedico(DaoMedico repositorioMedico) {
         this.repositorioMedico = repositorioMedico;
     }
 
@@ -110,11 +143,11 @@ public class ControladorConsultaBean implements Controlador {
         this.medicos = medicos;
     }
 
-    public RepositorioConsulta getRepositorio() {
+    public DaoConsulta getRepositorio() {
         return repositorio;
     }
 
-    public void setRepositorio(RepositorioConsulta repositorio) {
+    public void setRepositorio(DaoConsulta repositorio) {
         this.repositorio = repositorio;
     }
 
@@ -130,25 +163,28 @@ public class ControladorConsultaBean implements Controlador {
     public String inserir() {
         pacientes = repositorioPaciente.recuperar(pacientes.getSUS());
         medicos = repositorioMedico.recuperar(medicos.getCrm());
-        consultas.setPaciente(pacientesList);
+        consultas.setPaciente(pacientes);
         consultas.setMedico(medicos);
-       
+
         repositorio.inserir(consultas);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Consulta registrada com sucesso!!!"));
-        return "index.xhtml";
+        this.consultas = new Consulta();
+                
+        return "menuPaciente.xhtml";
     }
 
     @Override
     public String alterar() {
         repositorio.alterar(consultas);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Consulta altereda com sucesso!!!"));
-        return "index.xhtml";
+        this.consultas = new Consulta();
+        return "menuPaciente.xhtml";
     }
 
     @Override
     public String deletar() {
         repositorio.excluir(consultas);
-        return "";
+        return "menuPaciente.xhtml";
     }
 
     @Override
@@ -160,5 +196,15 @@ public class ControladorConsultaBean implements Controlador {
     public List<Consulta> recuperarTodos() {
         return repositorio.recuperarTodos();
     }
+    
+    public List<Consulta> consultasMedico(long id, Long medico_crm){
+         
+        return repositorio.recuperarConsultasMedico(id, medico_crm);
+    }
+    
+    public Consulta consultasPaciente(long id, Long paciente_SUS){
+        return repositorio.recuperarConsultasPaciente(id, paciente_SUS);
+    }
+   
 
 }

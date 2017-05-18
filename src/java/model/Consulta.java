@@ -6,14 +6,12 @@
 package model;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -35,9 +33,9 @@ public class Consulta implements Serializable {
     private String hora; 
    
     //@Lob
-    @Column(name = "paciente", nullable = false, length = 35)
-    @OneToMany(cascade = CascadeType.MERGE)
-    private List<Paciente> paciente;//Ou: private String [] paciente; OU private Collection < Paciente > paciente ;
+   
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private Paciente paciente;//Ou: private String [] paciente; OU private Collection < Paciente > paciente ;
   
     @ManyToOne(cascade = CascadeType.MERGE)
     private Medico medico;
@@ -46,7 +44,7 @@ public class Consulta implements Serializable {
 
     }
 
-    public Consulta(long id, List<Paciente> paciente, String data, String hora) {
+    public Consulta(long id, Paciente paciente, String data, String hora) {
         this.id = id;
         this.paciente = paciente;
         this.data = data;
@@ -62,11 +60,11 @@ public class Consulta implements Serializable {
         this.id = id;
     }
 
-    public List<Paciente> getPaciente() {
+    public Paciente getPaciente() {
         return paciente;
     }
 
-    public void setPaciente(List<Paciente> paciente) {
+    public void setPaciente(Paciente paciente) {
         this.paciente = paciente;
     }
 
@@ -93,18 +91,4 @@ public class Consulta implements Serializable {
         this.medico = medico;
     }
     
-    /*
-    public void inserirPaciente(Paciente p) {
-        p = null;
-
-        for (int i = 0; i < paciente.size(); i++) {
-            if (p == null) {
-                paciente.add(p);
-            }
-        
-    }*/
-
-   
-    
-
 }

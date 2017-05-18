@@ -12,9 +12,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.bean.SessionScoped;
 import model.Paciente;
-import model.Sistema;
-import model.repository.RepositorioPaciente;
-import model.repository.RepositorioSistema;
+import model.Dao.DaoPaciente;
+
 
 /**
  *
@@ -24,39 +23,23 @@ import model.repository.RepositorioSistema;
 @SessionScoped
 public class ControladorPacienteBean implements Controlador {
 
-    private RepositorioSistema repositorioSistema = null;
-    private RepositorioPaciente repositorio = null;
+    
+    private DaoPaciente repositorio = null;
     private Paciente pacientes;
-    private Sistema sistemas;
+    
 
     @PostConstruct
     public void Inicializar() {
         pacientes = new Paciente();
-        repositorio = new RepositorioPaciente();
-        repositorioSistema = new RepositorioSistema();
-        sistemas = new Sistema();
+        repositorio = new DaoPaciente();
+        
     }
 
     public ControladorPacienteBean() {
 
     }
 
-    public RepositorioSistema getRepositorioSistema() {
-        return repositorioSistema;
-    }
-
-    public void setRepositorioSistema(RepositorioSistema repositorioSistema) {
-        this.repositorioSistema = repositorioSistema;
-    }
-
-    public Sistema getSistemas() {
-        return sistemas;
-    }
-
-    public void setSistemas(Sistema sistemas) {
-        this.sistemas = sistemas;
-    }
-
+   
     public Paciente getPacientes() {
         return pacientes;
     }
@@ -65,30 +48,29 @@ public class ControladorPacienteBean implements Controlador {
         this.pacientes = pacientes;
     }
 
-    public RepositorioPaciente getRepositorio() {
+    public DaoPaciente getRepositorio() {
         return repositorio;
     }
 
-    public void setRepositorio(RepositorioPaciente repositorio) {
+    public void setRepositorio(DaoPaciente repositorio) {
         this.repositorio = repositorio;
     }
 
     @Override
     public String inserir() {
-        sistemas = repositorioSistema.recuperar(sistemas.getId());
-        pacientes.setSistema(sistemas);
+      
         repositorio.inserir(pacientes);
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("O paciente " + pacientes.getNome() + " foi cadastrado com sucesso!"));
-
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Paciente " + pacientes.getNome() + " foi cadastrado(a) com sucesso!"));
+        this.pacientes = new Paciente();
         return "index.xhtml";
     }
 
     @Override
     public String alterar() {
         repositorio.alterar(pacientes);
-        
-        return "index.xhtml";
+        this.pacientes = new Paciente();
+        return "menuPaciente.xhtml";
     }
 
     @Override
@@ -104,8 +86,8 @@ public class ControladorPacienteBean implements Controlador {
     @Override
     public String deletar() {
         repositorio.excluir(pacientes);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage ("O paciente" + pacientes.getNome() +" foi deletado com sucesso!"));
-        return "index.xhtml";
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage ("O(A) paciente" + pacientes.getNome() +" seu registro foi deletado com sucesso!"));
+        return "menuPaciente.xhtml";
     }
 
 }

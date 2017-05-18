@@ -6,7 +6,6 @@
 package model;
 
 import model.Hibernete.HibernateUtil;
-import java.util.List;
 import javax.persistence.EntityManager;
 
 /**
@@ -19,20 +18,20 @@ public class TestandoPacienteConsulta {
 
     public static void main(String[] args) {
 
-        manager = HibernateUtil.getManager();
+        manager = HibernateUtil.getInstance().getFactory().createEntityManager();
 
         Consulta c = new Consulta();
 
         Paciente p = new Paciente();
-        p.setSUS(2132345465);
+        //p.setSUS(2132345465);
         p.setNome("Izaquiele");
         p.setIdade(18);
         p.setEndereco("Angelim");
         p.setSintoma("Paranóia e Esquecimento");
         
         
-        //Pensar como salvar uma lista de pacientes, pois essa forma não tá inserindo no banco! 
-        c.setPaciente ((List<Paciente>) p);
+        
+        c.setPaciente (p);
 
         c.setData("12/28/1995");
         c.setHora("20:20:30");

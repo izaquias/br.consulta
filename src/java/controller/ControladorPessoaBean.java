@@ -10,7 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
 import model.Pessoa;
-import model.repository.RepositorioPessoa;
+import model.Dao.DaoPessoa;
 
 /**
  *
@@ -19,13 +19,13 @@ import model.repository.RepositorioPessoa;
 @ManagedBean(name="PessoaBean")
 @ViewScoped
 public class ControladorPessoaBean implements Controlador{
-    private RepositorioPessoa repositorio = null;
+    private DaoPessoa repositorio = null;
     private Pessoa pessoas;
     
     @PostConstruct
    public void Inicializar()
    {
-       repositorio = new RepositorioPessoa();
+       repositorio = new DaoPessoa();
        pessoas = new Pessoa();
    }
     
@@ -33,11 +33,11 @@ public class ControladorPessoaBean implements Controlador{
         
     }
 
-    public RepositorioPessoa getRepositorio() {
+    public DaoPessoa getRepositorio() {
         return repositorio;
     }
 
-    public void setRepositorio(RepositorioPessoa repositorio) {
+    public void setRepositorio(DaoPessoa repositorio) {
         this.repositorio = repositorio;
     }
 

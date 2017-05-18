@@ -9,14 +9,20 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <ui:include src="menu.xhtml"/>
+        <ui:include src="menuPaciente.xhtml"/>
+        
+      
         <h:form id="apresentaConsulta">
-            <p:dataTable id="tabela" var="atributo" value="#{ConsultaBean.recuperarTodos()}" paginator="true" rows="10" rowKey="#{atributo.id}" selectionMode="single">
+            <p:dataTable id="tabela" var="atributo" value="#{ConsultaBean.recuperarTodos()}" paginator="true" rows="5" rowKey="#{atributo.id}" selectionMode="single">
                 
                 <f:facet name="header">
-                    Consulta: Horários Diponíveis
+                    Consulta: Horários Agendados
                 </f:facet>
                 
+               <!-- <p:ajax event="rowSelect"
+                        listener="#{ConsultaBean.changePacientes(selectEvent)}"
+                     update="pacientesSelecionados" />
+               -->
                 <p:column headerText="Id">
                     <h:outputText value="#{atributo.id}"/>
                 </p:column>
@@ -28,29 +34,83 @@
                 <p:column headerText="Hora">
                     <h:outputText value="#{atributo.hora}"/>
                 </p:column>
+                 
+                <p:column headerText="CRM do Médico">
+                    <h:outputText value="#{atributo.medico.crm}"/>
+                </p:column>
+               
+               <p:column headerText="Médico">
+                   <h:outputText value="#{atributo.medico.nome}"/>
+               </p:column>
+               
+               <p:column headerText="Especialidade Profissional">
+                   <h:outputText value="#{atributo.medico.especialidade}"/>
+               </p:column>
+               
+               <p:column headerText="SUS do Paciente">
+                   <h:outputText value="#{atributo.paciente.SUS}"/>
+               </p:column> 
+               
+               <p:column headerText="Paciente">
+                   <h:outputText value="#{atributo.paciente.nome}"/>
+               </p:column> 
+               
+               
                 
-                <p:dataTable id="pacientesSelecionados" var="atributo" value="#{ConsultaBean.consultas.paciente}" rowKey="#{select.SUS}">
-                    
-                    <f:facet name="header">
-                    Pacientes: Agendaram uma Consulta
-                     </f:facet>
-                    
-                    <p:column headerText="Nome">
-                        <h:outputText value="#{atributo.nome}"/>
-                    </p:column>
-                    
-                    <p:column headerText="Sintoma">
-                        <h:outputText value="#{atributo.sintoma}"/>
-                    </p:column>
-                    
-                </p:dataTable>
+                <p:column headerText="Operações" style="width: 13%">
+                    <p:commandButton icon="ui-icon-search" oncomplete="PF('widDialVisualiza').show()"
+                                     update=':apresentaConsulta:dialVisualiza' title="visualizar">
+                        <f:setPropertyActionListener value="#{atributo}" target="#{ConsultaBean.consultas}"/>
+                    </p:commandButton>
+                    <p:commandButton icon='ui-icon-pencil' action="alteraConsulta.xhtml" title="alterar"  oncomplete="PF('widDialVisualiza').show()">
+                        <f:setPropertyActionListener value="#{atributo}" target="#{ConsultaBean.consultas}"/>
+                    </p:commandButton>
+                    <p:commandButton icon='ui-icon-closethick' oncomplete="PF('widDialDeleta').show()" title="deletar">
+                        <f:setPropertyActionListener value="#{atributo}" target="#{ConsultaBean.consultas}"/>
+                    </p:commandButton>
+                </p:column>
                
             </p:dataTable>
             
+           
+            
+            <p:dialog id="dialVisualiza" visible="false" resizable="false" modal="true" widgetVar="widDialVisualiza">
+                <p:panelGrid columns="2">
+                    
+                    <p:outputLabel for="id" value="Id:"/>
+                    <p:outputLabel id="id" value="#{ConsultaBean.consultas.id}"/>
+                    
+                    <p:outputLabel for="data" value="Data da Consulta:"/>
+                    <p:outputLabel id="data" value="#{ConsultaBean.consultas.data}"/>
+
+                    <p:outputLabel for="hora" value="Hora:"/>
+                    <p:outputLabel id="hora" value="#{ConsultaBean.consultas.hora}"/>
+
+                    <p:outputLabel for="medico" value="CRM do Medico:"/>
+                    <p:outputLabel id="medico" value="#{ConsultaBean.consultas.medico.crm}"/>
+                    
+                    <p:outputLabel for="medi" value="Especialidade  Profissional:"/>
+                    <p:outputLabel id="medi" value="#{ConsultaBean.consultas.medico.especialidade}"/>
+                    
+                    <p:outputLabel for="paciente" value="SUS do Paciente:"/>
+                    <p:outputLabel id="paciente" value="#{ConsultaBean.consultas.paciente.SUS}"/>
+                   
+                    <p:outputLabel for="paci" value="Paciente:"/>
+                    <p:outputLabel id="paci" value="#{ConsultaBean.consultas.paciente.nome}"/>
+                    
+                </p:panelGrid>
+                
+            </p:dialog>
+            
+            <p:confirmDialog message="Deseja realmente deletar esta consulta?" visible="false" id="dialDeleta" widgetVar="widDialDeleta">
+                <p:commandButton id="butao" value="sim" action="#{ConsultaBean.deletar()}" style="color: green; left: 5%" 
+                                 update=':apresentaConsulta:tabela' oncomplete="PF('widDialDeleta').hide()" />
+                <p:commandButton value="não" style="position: relative; left: 55%; color: red" oncomplete="PF('widDialDeleta').hide()" />
+            </p:confirmDialog>
             
             
         </h:form>
-            
+           <!-- </c:if>-->
     </h:body>
 </html>
 

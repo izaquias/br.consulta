@@ -2,7 +2,7 @@ package model;
 
 import model.Hibernete.HibernateUtil;
 import javax.persistence.EntityManager;
-import model.repository.RepositorioPaciente;
+import model.Dao.DaoPaciente;
 /**
  *
  * @author Izaquias
@@ -12,10 +12,12 @@ public class TestandoPaciente {
     static EntityManager manager;
 
     public static void main(String[] args) {
-        manager = HibernateUtil.getManager();
-
+        manager = HibernateUtil.getInstance().getFactory().createEntityManager();
+         
+        //Remove o registro passado,caso exista no banco!
+        //Obs.: Funciona se a devida classe não possui ORM
         Paciente p = new Paciente();
-        RepositorioPaciente rp = new RepositorioPaciente();
+        DaoPaciente rp = new DaoPaciente();
 
        // p.setSUS(12249);
         p.setNome("Scorpion");
@@ -25,7 +27,6 @@ public class TestandoPaciente {
         
         rp.excluir(p);
         manager.getTransaction().begin();
-        //manager.persist(p);
         manager.getTransaction().commit();
         manager.close();
 

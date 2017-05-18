@@ -11,7 +11,8 @@
     </h:head>
     <h:body>
 
-        <ui:include src="menu.xhtml"/>
+        <ui:include src="menuMedico.xhtml"/>
+        
         <h:form id="alteraMedico">
             <p:fieldset legend="Alterar Médico">
 
@@ -30,22 +31,28 @@
 
                     <p:outputLabel for="sintoma" value="Salário:"/>
                     <p:inputText id="sintoma" value="#{MedicoBean.medicos.salario}"/>
+                    
+                    <p:outputLabel for="email" value="E-mail:"/>
+                    <p:inputText id="email" value="#{MedicoBean.medicos.email}"/>
+                    
+                    <p:outputLabel for="senha" value="Senha:"/>
+                    <p:inputText id="senha" value="#{MedicoBean.medicos.senha}"/>
 
                 </p:panelGrid>
 
                 <p:commandButton value="Alterar" icon="ui-icon-star" oncomplete="PF('widDial').show()" />
-                <p:commandButton value="Cancelar" action="menu.xhtml"/> 
+                <p:commandButton value="Cancelar" action="apresentaMedico.xhtml" immediate="true"/> 
             </p:fieldset>
             <p:dialog id="dial" modal="true" resizable="false"  visible="false" widgetVar="widDial">
 
                 <f:facet name="herder">
                     Atenção!!!
                 </f:facet>
-                <p:outputLabel value="Realmente quer alterar esse Paciente?"/>
+                <p:outputLabel value="Realmente quer alterar esse Médico?"/>
 
                 <f:facet name="footer">
-                    <p:commandButton value="Sim" action="#{MedicoBean.alterar()}" update="alteraMedico" oncomplete="PF('WidDial').hide()" />
-                    <p:commandButton value="Não" style="position: relative; left: 30%" oncomplete="PF('WidDial').hide()"/>
+                    <p:commandButton value="Sim" action="#{MedicoBean.alterar()}" style="color: green" update="alteraMedico" oncomplete="PF('WidDial').hide()" />
+                    <p:commandButton value="Não" style="position: relative; left: 50%; color: red" oncomplete="PF('WidDial').hide()"/>
                 </f:facet>
             </p:dialog>
         </h:form>

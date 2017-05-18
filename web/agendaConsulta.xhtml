@@ -9,15 +9,23 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-
+       <!-- <ui:include src="menu.xhtml"/>-->
         <h:form  id="agendaConsulta">
+            <p:growl id="growl" sticky="true" showDetail="true"/>
+           
+            
+            <p:wizard flowListener="#{ConsultaBean.onFlowProcess}">
+                
+                <p:tab id="paciente" title="Selecionar">
+                    
+                    <p:panel header="Detalhes dos pacientes">
+                        
+                        <p:messages />
 
-            <p:growl id="msgs" showDetail="true" />
-
-            <p:dataTable id="checkBox" var="atributo" value="#{ConsultaBean.pacienteSelected}" selection="#{ConsultaBean.pacientesList}" rowKey="#{atributo.SUS}" style="margin-bottom:0">
+                        <p:dataTable id="checkBox" var="atributo" value="#{ConsultaBean.recuperarTodos()}" selection="#{ConsultaBean.pacientes.SUS}" paginator="true" rows="10" rowKey="#{atributo.SUS}" style="margin-bottom:0">
                 
                 <f:facet name="header">
-                    Checkbox
+                    Pacientes a selecionar
                 </f:facet>
                 <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
 
@@ -25,7 +33,7 @@
                     <h:outputText value="#{atributo.SUS}"/>
                 </p:column>
 
-                <p:column headerText="Nome" filterBy="#{PacienteBean.pacientes.nome}" filterMatchMode="startsWith"> 
+                <p:column headerText="Nome" filterBy="#{atributo.nome}" filterMatchMode="startsWith"> 
                     <h:outputText value="#{atributo.nome}"/>
                 </p:column>
 
@@ -42,13 +50,7 @@
                     <h:outputText value="#{atributo.sintoma}"/>
                 </p:column>
             </p:dataTable>
-            <p:commandButton value="Selecionar" oncomplete="PF('multiPacienteDialog').show()" update="dialSeleciona"/>
-            
-            <f:facet name="footer">
-                Atenção!!!
-                <p:commandButton process="checkBox" update=":AgendaConsulta:multiPaciente" icon="ui-icon-search" value="ver" oncomplete="PF('multiPacienteDialog').show()"/>
-            </f:facet>
-            
+           
 
             <p:dialog id="dial" header="Informações dos Pacientes!" widgetVar="pacienteDial" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
 
@@ -80,13 +82,97 @@
             <p:dialog id="dialSeleciona" header="Pacientes Selecionados!" widgetVar="multiPacienteDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="200">
 
                 <p:outputPanel  id="PacienteDetalhes" style="text-align:center;" >
-                    <ui:repeat value="#{ConsultaBean.pacientesList}" var="paciente">
+                    <ui:repeat value="#{ConsultaBean.pacientes}" var="paciente">
                         <h:outputText value="#{paciente.SUS} - #{paciente.nome}" style="display:block"/>
                     </ui:repeat>
 
                 </p:outputPanel>
             </p:dialog>
+            <h:outputText value="Skip to last: " /><font></font>
+            <h:selectBooleanCheckbox value="#{ConsultaBean.skip}" />
+            </p:panel>
+            
+            </p:tab>
+                
+                
+                <p:tab id="consulta" title=" Agendar">  
+                    
+                    <p:panel header="Detalhe da Consulta">
+                        
+                        <p:messages />
+                        <p:fieldset legend="Cadastrar Consulta">
 
+                            <p:dataTable id="tabela" var="atributo" value="#{ConsultaBean.pacientes}" rows="20" rowKey= "#{atributo.SUS}">
+
+                        <p:column headerText="SUS">
+                            <h:outputText value="#{atributo.SUS}"/>
+                        </p:column>
+
+                    <p:column headerText="Nome"> 
+                            <h:outputText value="#{atributo.nome}"/>
+                        </p:column>
+
+
+                        <p:column headerText="Idade">
+                            <h:outputText value="#{atributo.idade}"/>
+                        </p:column>
+
+                        <p:column headerText="Endereço">
+                            <h:outputText value="#{atributo.endereco}"/>
+                        </p:column>
+
+                        <p:column headerText="Sintoma">
+                            <h:outputText value="#{atributo.sintoma}"/>
+                        </p:column>
+
+                    </p:dataTable> 
+                
+                <p:panelGrid columns="2" columnClasses="label, value">
+                    
+                    
+                    <p:outputLabel for="data" value="Data da Consulta:"/>
+                    <p:inputMask id="data" mask="99/99/9999" value="#{ConsultaBean.consultas.data}" required="true"/>
+
+                    <p:outputLabel for="hora" value="Hora:"/>
+                    <p:inputMask id="hora" mask="99:99:99" value="#{ConsultaBean.consultas.hora}" required="true"/>
+ 
+                    <p:outputLabel for="medico" value="Medico:"/>
+                    
+                    
+                    <p:selectOneMenu id="medico" value="#{ConsultaBean.medicos.crm}" filter="true" filterMatchMode="startsWith" style="width:235px" required="true">
+
+                        <f:selectItems value="#{MedicoBean.recuperarTodos()}" var="atributo" itemValue="#{atributo.crm}" 
+                                       itemLabel="#{atributo.especialidade}" />
+                    </p:selectOneMenu>
+
+
+                    
+
+
+                  <!--  <p:commandButton value="Cadastrar" icon="ui-icon-star" oncomplete="PF('widDial').show()" update=":cadConsulta:dial"/>
+                    <p:commandButton value="Limpar Campos" type="reset"/> 
+                    
+                    <p:dialog id="dial" resizable="false" modal="true" visible="false" widgetVar="widDial">
+                        <f:facet name="header">
+                            Atenção!!!
+                        </f:facet>
+                        <p:outputLabel value="Realmente deseja cadastrar essa consulta?"/>
+                        <f:facet name="footer">
+                            <p:commandButton value="Sim" action="#{ConsultaBean.inserir()}" oncomplete="PF('widDial').hide()" update="cadConsulta"/> 
+                            <p:commandButton value="Não" style="position: relative; left: 30%" oncomplete="PF('widDial').hide()"/>
+                        </f:facet>
+                    </p:dialog> -->
+
+                </p:panelGrid>
+                            <p:commandButton value="cadastrar" actionListener="#{ConsultaBean.inserir()}" update="growl" process="@this"/>
+            </p:fieldset>
+                        
+                    </p:panel>
+                    
+                </p:tab>
+            
+            </p:wizard>
+            
         </h:form>
 
     </h:body>

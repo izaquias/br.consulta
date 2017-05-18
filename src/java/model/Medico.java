@@ -2,12 +2,9 @@
 package model;
 
 import java.io.Serializable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -28,22 +25,24 @@ public class Medico implements Serializable {
     private String especialidade;
     @Column(name = "salario" , nullable = false, length = 10)
     private double salario;
+    @Column(name="e_mail", nullable = false, length = 50, unique = true)
+    private String email;
+    @Column(name = "senha", nullable = false, length = 15)
+    private String senha;
     
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "sistema_id")
-    private Sistema sistema;
     
     public Medico(){
         
     }
 
-    public Medico(long crm, String nome, int idade, String especialidade, double salario, Sistema sistema) {
+    public Medico(long crm, String nome, int idade, String especialidade, double salario, String email, String senha) {
         this.crm = crm;
         this.nome = nome;
         this.idade = idade;
         this.especialidade = especialidade;
         this.salario = salario;
-        this.sistema = sistema;
+        this.email = email;
+        this.senha = senha;
     }
     
     public long getCrm(){
@@ -84,14 +83,20 @@ public class Medico implements Serializable {
     public void setSalario(double salario) {
         this.salario = salario;
     }
-
-    public Sistema getSistema() {
-        return sistema;
+    public String getEmail() {
+        return email;
     }
 
-    public void setSistema(Sistema sistema) {
-        this.sistema = sistema;
+    public void setEmail(String email) {
+        this.email = email;
     }
-    
-    
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
 }

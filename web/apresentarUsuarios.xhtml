@@ -18,15 +18,15 @@
                     Login dos Pacientes Cadastrados
                 </f:facet> 
                 
-                <p:column headerText="Login">
+                <p:column headerText="Id">
                     <h:outputText value="#{atributo.id}"/>
                 </p:column>
-                <p:column headerText="Login">
+                <p:column headerText="E-mail" filterBy="#{atributo.login}">
                     <h:outputText value="#{atributo.login}"/>
-                </p:column>
+                </p:column><!--
                 <p:column headerText="Senha">
                     <h:outputText value="#{atributo.senha}"/>
-                </p:column>
+                </p:column>-->
                 <p:column headerText="Operações" style="width: 13%">
                     <p:commandButton icon="ui-icon-search" oncomplete="PF('widDialVisualiza').show()"
                                      update=':apresentaLogin:dialVisualiza' title="visualizar">
@@ -44,7 +44,7 @@
             <p:dialog id="dialVisualiza" visible="false" resizable="false" modal="true" widgetVar="widDialVisualiza">
 
                 <p:panelGrid columns="2">
-                    <h:outputText value="Login:"/>
+                    <h:outputText value="E-mail:"/>
                     <h:outputText value="#{SistemaBean.sistemas.login}"/>
 
                     <h:outputText value="Senha:"/>
@@ -57,8 +57,8 @@
 
             <p:confirmDialog message="Deseja realmente deletar este login de usuário?" visible="false" id="dialDeleta" widgetVar="widDialDeleta">
                 <p:commandButton id="butao" value="sim" action="#{SistemaBean.deletar()}" update=':apresentaLogin:tabela'
-                                 oncomplete="PF('widDialDeleta').hide()" />
-                <p:commandButton value="não" oncomplete="PF('widDialDeleta').hide()" />
+                                 style="color: green"   oncomplete="PF('widDialDeleta').hide()" />
+                <p:commandButton value="não" style="position: relative; left: 50%; color: red" oncomplete="PF('widDialDeleta').hide()" />
             </p:confirmDialog>
 
         </h:form>

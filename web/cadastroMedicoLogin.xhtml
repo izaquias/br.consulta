@@ -5,38 +5,44 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-      <h:head>
+    <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
         <ui:include src="menu.xhtml"/>
+        <a href="menu.xhtml">Voltar</a>
         <h:form id="FormularioMedico">
-
+            <p:messages id="mensages"/>
             <p:fieldset legend="Cadastro Medico">
-                
+
                 <p:panelGrid columns="2">
 
                     <p:outputLabel for="crm" value="CRM:"/>
-                    <p:inputText id="crm" type="number" required="true" requiredMessage="O CRM é obrigatório!" value="#{MedicoBean.medicos.crm}"/>
+                    <p:inputMask id="crm"  mask="999999999999999"  value="#{MedicoBean.medicos.crm}"  required="true" requiredMessage="CRM não preenchido : Campo obrigatório!"/>
 
                     <p:outputLabel for="nome" value="Nome:"/>
-                    <p:inputText id="nome" value="#{MedicoBean.medicos.nome}"/>
+                    <p:inputText id="nome" value="#{MedicoBean.medicos.nome}" required="true" requiredMessage="O nome é obrigatório!"/>
 
                     <p:outputLabel for="idade" value="Idade:"/>
-                    <p:inputText id="idade" value="#{MedicoBean.medicos.idade}"/>
+                    <p:inputText id="idade" value="#{MedicoBean.medicos.idade}" required="true"/>
 
                     <p:outputLabel for="especialidade" value="Especialidade:"/>
-                    <p:inputText id="especialidade" value="#{MedicoBean.medicos.especialidade}"/>
+                    <p:inputText id="especialidade" value="#{MedicoBean.medicos.especialidade}" required="true"/>
 
                     <p:outputLabel for="salario" value="Salário:"/>
-                    <p:inputText id="salario" value="#{MedicoBean.medicos.salario}"/>
+                    <p:inputText id="salario" value="#{MedicoBean.medicos.salario}" required="true"/>
 
-                    <p:outputLabel for="sistema" value="Sistema:"/>
-                    <p:selectOneMenu id="sistema" value="#{MedicoBean.sistemas.id}" filter="true" filterMatchMode="startsWith" style="width: 235px">
+                    <p:outputLabel for="email" value="E-mail:"/>
+                    <p:inputText id="email" value="#{MedicoBean.medicos.email}" required="true" validatorMessage="Formato de e-mail Invalálido!">
+                        <f:validateRegex 
+                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
 
-                        <f:selectItems value="#{SistemaBean.recuperarTodos()}" var="atributo" itemValue="#{atributo.id}" itemLabel="#{atributo.login}"/>
+                    </p:inputText> 
+                    
 
-                    </p:selectOneMenu>
+                    <p:outputLabel for="senha" value="Senha:"/>
+                    <p:password id="senha" value="#{MedicoBean.medicos.senha}" required="true"/>
+
 
                     <p:commandButton value="Cadastrar" icon="ui-icon-star" oncomplete="PF('widDial').show()" />
                     <p:commandButton value="Limpar Campos" type="reset"/> 
@@ -49,8 +55,8 @@
                         <h:outputText value="Deseja realmente cadastrar esse médico?"/>
 
                         <f:facet name="footer">
-                            <p:commandButton value="sim" style="color: floralwhite" action="#{MedicoBean.inserir()}"  update="FormularioMedico"/>
-                            <p:commandButton style="position: relative; left: 20%; color: red" value="não" oncomplete="PF('widDial').hide()"/>
+                            <p:commandButton value="sim" style="color: green" action="#{MedicoBean.inserir()}" update="FormularioMedico"/>
+                            <p:commandButton style="position: relative; left: 50%; color: red" value="não" oncomplete="PF('widDial').hide()"/>
                         </f:facet>
                     </p:dialog>
                 </p:panelGrid>

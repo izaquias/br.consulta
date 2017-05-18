@@ -9,69 +9,54 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <ui:include src="menu.xhtml"/>
+        <ui:include src="menuPaciente.xhtml"/>
+        
         <h:form id="cadConsulta">
-            <p:fieldset legend="Cadastrar Consulta">
+            <p:fieldset legend="Agendar Consulta">
 
-                <p:dataTable id="tabela" var="atributo" value="#{ConsultaBean.pacientesList}" rows="20" rowKey= "#{atributo.SUS}">
-
-                        <p:column headerText="SUS">
-                            <h:outputText value="#{atributo.SUS}"/>
-                        </p:column>
-
-                        <p:column headerText="Nome" filterBy="#{PacienteBean.pacientes.nome}" filterMatchMode="startsWith"> 
-                            <h:outputText value="#{atributo.nome}"/>
-                        </p:column>
-
-
-                        <p:column headerText="Idade">
-                            <h:outputText value="#{atributo.idade}"/>
-                        </p:column>
-
-                        <p:column headerText="Endereço">
-                            <h:outputText value="#{atributo.endereco}"/>
-                        </p:column>
-
-                        <p:column headerText="Sintoma">
-                            <h:outputText value="#{atributo.sintoma}"/>
-                        </p:column>
-
-                    </p:dataTable>
-                
                 <p:panelGrid columns="2">
+
+                <p:outputLabel for="data" value="Data da Consulta:"/>
+                <p:inputMask id="data" mask="99/99/9999" value="#{ConsultaBean.consultas.data}"  required="true"/>
+
+                <p:outputLabel for="hora" value="Hora:"/>
+                <p:inputMask id="hora" mask="99:99:99" value="#{ConsultaBean.consultas.hora}" required="true"/>
+
+                <p:outputLabel for="paciente" value="Paciente:"/>
+                
+                <p:selectOneMenu id="paciente" value="#{ConsultaBean.pacientes.SUS}" filter="true" filterMatchMode="startsWith" style="width:235px" required="true">
+
+                    <f:selectItem itemLabel="--Selecione--"/>
+                    <f:selectItems value="#{PacienteBean.recuperarTodos()}" var="pacientes" itemValue="#{pacientes.SUS}" itemLabel="#{pacientes.nome}"/>
+
+                </p:selectOneMenu>
+                
+                <p:outputLabel for="medico" value="Medico:"/>
+                
+                
+                <p:selectOneMenu id="medico" value="#{ConsultaBean.medicos.crm}" filter="true" filterMatchMode="startsWith" style="width:235px" required="true">
+                    <f:selectItem itemLabel="--Selecione--"/>
+                    <f:selectItems value="#{MedicoBean.recuperarTodos()}" var="atributo" itemValue="#{atributo.crm}" itemLabel="#{atributo.especialidade}" />
                     
-                    
-                    <p:outputLabel for="data" value="Data da Consulta:"/>
-                    <p:inputText id="data" value="#{ConsultaBean.consultas.data}"/>
+                </p:selectOneMenu>
 
-                    <p:outputLabel for="hora" value="Hora:"/>
-                    <p:inputText id="hora" value="#{ConsultaBean.consultas.hora}"/>
-
-                    <p:outputLabel for="medico" value="Medico:"/>
-
-                    <p:selectOneMenu id="medico" value="#{ConsultaBean.medicos.crm}" filter="true" filterMatchMode="startsWith" style="width:235px">
-
-                        <f:selectItems value="#{MedicoBean.recuperarTodos()}" var="atributo" itemValue="#{atributo.crm}" 
-                                       itemLabel="#{atributo.especialidade}"/>
-                    </p:selectOneMenu>
+               
 
 
-                    
 
+                <p:commandButton value="Cadastrar" icon="ui-icon-star" oncomplete="PF('widDial').show()" update=":cadConsulta:dial"/>
+                <p:commandButton value="Limpar Campos" type="reset"/> 
 
-                    <p:commandButton value="Cadastrar" icon="ui-icon-star" oncomplete="PF('widDial').show()" />
-                    <p:commandButton value="Limpar Campos" type="reset"/> 
-                    
-                    <p:dialog id="dial" resizable="false" modal="true" visible="false" widgetVar="widDial">
-                        <f:facet name="header">
-                            Atenção!!!
-                        </f:facet>
-                        <p:outputLabel value="Realmente deseja cadastrar essa consulta?"/>
-                        <f:facet name="footer">
-                            <p:commandButton value="Sim" action="#{ConsultaBean.inserir()}" oncomplete="PF('widDial').hide()" update="cadConsulta"/> 
-                            <p:commandButton value="Não" style="position: relative; left: 30%" oncomplete="PF('widDial').hide()"/>
-                        </f:facet>
-                    </p:dialog>
+                <p:dialog id="dial" resizable="false" modal="true" visible="false" widgetVar="widDial">
+                    <f:facet name="header">
+                        Atenção!!!
+                    </f:facet>
+                    <p:outputLabel value="Realmente deseja cadastrar essa consulta?"/>
+                    <f:facet name="footer">
+                        <p:commandButton value="Sim" action="#{ConsultaBean.inserir()}"  style="color: green" oncomplete="PF('widDial').hide()" update="cadConsulta"/> 
+                        <p:commandButton value="Não" style="position: relative; left: 50%; color: red" oncomplete="PF('widDial').hide()"/>
+                    </f:facet>
+                </p:dialog>
 
                 </p:panelGrid>
             </p:fieldset>

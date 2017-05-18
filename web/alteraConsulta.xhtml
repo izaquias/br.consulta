@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:include src="menuPaciente.xhtml"/>
+        
+        <h:form id="alteraConsulta">
+            
+            <p:fieldset legend="Alterar Consulta">
+            
+            <p:panelGrid columns="2">
+                <p:outputLabel for="id" value="Id"/>
+                <h:outputText id="id" value="#{ConsultaBean.consultas.id}"/> 
+                
+                <p:outputLabel for="data" value="Data da Consulta:"/>
+                    <p:inputText id="data" value="#{ConsultaBean.consultas.data}"/>
+
+                    <p:outputLabel for="hora" value="Hora:"/>
+                    <p:inputText id="hora" value="#{ConsultaBean.consultas.hora}"/>
+
+                    <p:outputLabel for="medico" value="CRM do Médico:"/>
+                    <h:outputText id="medico" value="#{ConsultaBean.consultas.medico.crm}"/>
+                    
+                    <p:outputLabel for="medic" value="Médico"/>
+                    <h:outputText id="medic" value="#{ConsultaBean.consultas.medico.nome}"/>
+                    
+                    <p:outputLabel for="medi" value="Especialidade Profissional:"/>
+                    <h:outputText id="medi" value="#{ConsultaBean.consultas.medico.especialidade}"/>
+                    
+                    <p:outputLabel for="paciente" value="SUS do Paciente:"/>
+                    <h:outputText id="paciente" value="#{ConsultaBean.consultas.paciente.SUS}"/>
+                    
+                    <p:outputLabel for="paci" value="Paciente:"/>
+                    <h:outputText id="paci" value="#{ConsultaBean.consultas.paciente.nome}"/>
+                
+            </p:panelGrid>
+                
+                <p:commandButton value="Alterar" oncomplete="PF('widDial').show()"/>
+                <p:commandButton value="Cancelar"  style="position: relative; left: 2%" action="menuPaciente.xhtml" 
+                                 oncomplete="PF('widDial').hide()"/>
+                
+            </p:fieldset>  
+            
+            <p:dialog id="dial" modal="true" resizable="false"  visible="false" widgetVar="widDial">
+                
+                <f:facet name="header">
+                    Atenção!!!
+                </f:facet>
+                <p:outputLabel value="Realmente quer alterar os dados desta Consulta?"/>
+                
+                 <f:facet name="footer">
+                     <p:commandButton value="sim" action="#{ConsultaBean.alterar()}" style="color: green" update=":alteraConsulta" oncomplete="PF('widDial').hide()" />
+                    <p:commandButton value="não" style="position: relative;  left: 50%; color: red" oncomplete="PF('widDial').hide()" />
+                </f:facet>
+                
+            </p:dialog>
+        </h:form>
+    </h:body>
+</html>
+

@@ -5,9 +5,33 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>home</title>
+        <title>Home</title>
+        <style>
+            h1{
+                color:black;
+            }
+
+            h2{
+                color: yellow;
+            }
+            h3{
+                color: red;
+            }
+            h4{
+                color: green;
+            }
+
+
+
+
+        </style>
     </h:head>
     <h:body>
+        <center><h1>Bem vindo ao Gerenciador de Consulta Web!</h1> 
+         <!--   <h2>Agende Seu Atendimento!</h2>
+            <h3>Acesse o menu de seu interesse!</h3>
+            <h4>Agradecemos desde Já!</h4>--></center> 
+         
         <ui:include src="menu.xhtml"/>
         <p:growl id="gro" life="5000"/>
         <p:messages/>

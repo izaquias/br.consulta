@@ -10,32 +10,41 @@
     </h:head>
     <h:body>
         <ui:include src="menu.xhtml"/>
-        
+        <a href="menu.xhtml">Voltar</a>
+
         <h:form id="cadPacienteLogin">
 
-            <p:fieldset legend="Cadastro login Paciente">
-             
+            <p:messages id="mensages"/>
+            <p:fieldset legend="Cadastrar Paciente">
+
 
                 <p:panelGrid columns="2">
                     <p:outputLabel for="SUS" value="SUS:"/>
-                    <p:inputText type="number"  id="SUS"  value="#{PacienteBean.pacientes.SUS}"/>
+                    <p:inputMask   id="SUS" mask="999999999999999" value="#{PacienteBean.pacientes.SUS}" required="true" requiredMessage="Campo vazio: O SUS é obrigatório!"/>
 
                     <p:outputLabel for="nome" value="Nome:"/>
-                    <p:inputText id="nome" value="#{PacienteBean.pacientes.nome}"/>
+                    <p:inputText id="nome" value="#{PacienteBean.pacientes.nome}" required="true"/>
 
-                    <p:outputLabel for="idade" value="Idade:"/>
-                    <p:inputText id="idade" value="#{PacienteBean.pacientes.idade}"/>
+                    <p:outputLabel for="idade" value="Idade:"/> 
+                    <p:inputText id="idade" value="#{PacienteBean.pacientes.idade}" required="true"/>
 
                     <p:outputLabel for="endereco" value="Endereço:"/>
-                    <p:inputText id="endereco" value="#{PacienteBean.pacientes.endereco}"/>
+                    <p:inputText id="endereco" value="#{PacienteBean.pacientes.endereco}" required="true"/>
 
                     <p:outputLabel for="sintoma" value="Sintoma:"/>
-                    <p:inputText id="sintoma" value="#{PacienteBean.pacientes.sintoma}"/>
+                    <p:inputText id="sintoma" value="#{PacienteBean.pacientes.sintoma}" required="true"/>
 
-                    <p:outputLabel for="sistema" value="Sistema"/>
-                    <p:selectOneMenu id="sistema" value="#{PacienteBean.sistemas.id}" filter="true" filterMatchMode="startsWith" style="width:235px">
-                        <f:selectItems value="#{SistemaBean.recuperarTodos()}" var="atributo" itemValue="#{atributo.id}" itemLabel="#{atributo.login}"/>
-                    </p:selectOneMenu>
+                    <p:outputLabel for="email" value="E-mail:"/>
+                    <p:inputText id="email" value="#{PacienteBean.pacientes.email}" required="true"  validatorMessage="Formatto de e-mail inválido!" 
+                                 requiredMessage="Fora do padão! Preencha o compo corretamente!">
+                     <f:validateRegex 
+                         pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
+
+                    </p:inputText>
+                    
+                    
+                    <p:outputLabel for="senha" value="Senha"/>
+                    <p:password id="senha" value="#{PacienteBean.pacientes.senha}" required="true"/>
 
                     <p:commandButton value="Cadastrar" icon="ui-icon-star" oncomplete="PF('widDial').show()" />
                     <p:commandButton value="Limpar Campos" type="reset"/> 
@@ -48,8 +57,8 @@
 
                         <h:outputText value="Deseja realmente cadastrar este Paciente?"/><br/>
                         <f:facet name="footer">
-                            <p:commandButton value="sim" action="#{PacienteBean.inserir()}"/>
-                            <p:commandButton style="position: relative; left: 30%; color: cyan" value="não" oncomplete="PF('widDial').hide()"/>
+                            <p:commandButton value="sim" action="#{PacienteBean.inserir()}" style="color: green" update="cadPacienteLogin"/>
+                            <p:commandButton style="position: relative; left: 50%; color: red" value="não" oncomplete="PF('widDial').hide()"/>
                         </f:facet>
 
                     </p:dialog>

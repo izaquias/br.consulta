@@ -9,15 +9,16 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <ui:include src="menu.xhtml"/>  
+        <ui:include src="menuPaciente.xhtml"/>  
+        
         <h:form id="apresentaPacientes">
             
-            <p:dataTable id="tabela" var="atributo" value="#{PacienteBean.recuperarTodos()}"  paginator="true" rows="10" rowKey="#{atributo.SUS}"
+            <p:dataTable id="tabela" var="atributo" value="#{PacienteBean.recuperarTodos()}"  paginator="true" rows="5" rowKey="#{atributo.SUS}"
                          selectionMode="single">
                  <f:facet name="header">
                     Pacientes Cadastrados
                 </f:facet>
-                <p:column headerText="SUS">
+                <p:column headerText="SUS" filterBy="#{atributo.SUS}">
                     <h:outputText value="#{atributo.SUS}"/>
                 </p:column>
                 <p:column headerText="Nome" filterBy="#{atributo.nome}">
@@ -29,8 +30,13 @@
                 <p:column headerText="Endereço">
                     <h:outputText value="#{atributo.endereco}"/>
                 </p:column>
+                <!--
                 <p:column headerText="Sintoma">
                     <h:outputText value="#{atributo.sintoma}"/>
+                </p:column>
+                -->
+                <p:column headerText="E-mail">
+                    <h:outputText value="#{atributo.email}"/>
                 </p:column>
                 <p:column headerText="Operações" style="width: 13%">
                     <p:commandButton icon="ui-icon-search" oncomplete="PF('widDialVisualiza').show()"
@@ -64,17 +70,21 @@
                     <h:outputText value="Sintoma:"/>
                     <h:outputText value="#{PacienteBean.pacientes.sintoma}"/>
                     
+                    <p:outputLabel value="E-mail:"/>
+                    <h:outputText value="#{PacienteBean.pacientes.email}"/>
                 </p:panelGrid>
 
             </p:dialog>
             
              <p:confirmDialog message="Deseja realmente deletar este paciente?" visible="false" id="dialDeleta" widgetVar="widDialDeleta">
-                 <p:commandButton id="butao" value="sim" action="#{PacienteBean.deletar()}" update=':apresentaPacientes:tabela'
-                                 oncomplete="PF('widDialDeleta').hide()" />
-                <p:commandButton value="não" oncomplete="PF('widDialDeleta').hide()" />
+                 <p:commandButton id="butao" value="sim"  action="#{PacienteBean.deletar()}" update=':apresentaPacientes:tabela'
+                                  style="color: green"  oncomplete="PF('widDialDeleta').hide()" />
+                 <p:commandButton value="não" style="position: relative; left: 50%; color: red" oncomplete="PF('widDialDeleta').hide()" />
             </p:confirmDialog>
             
         </h:form>
+        
+        
     </h:body>
 </html>
 

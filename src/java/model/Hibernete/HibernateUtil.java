@@ -5,7 +5,7 @@
  */
 package model.Hibernete;
 
-import javax.persistence.EntityManager;
+
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -26,11 +26,11 @@ public class HibernateUtil {
         return factory;
     }
 
-    public static EntityManager getManager() {
+    public static HibernateUtil getInstance() {
         if (hibernateUtil == null) {
             hibernateUtil = new HibernateUtil();
         }
-        return hibernateUtil.getFactory().createEntityManager();
+        return hibernateUtil;
     }
 
 }

@@ -12,9 +12,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import model.Medico;
-import model.Sistema;
-import model.repository.RepositorioMedico;
-import model.repository.RepositorioSistema;
+import model.Dao.DaoMedico;
+
 
 /**
  *
@@ -24,10 +23,10 @@ import model.repository.RepositorioSistema;
 @SessionScoped
 @ManagedBean(name="MedicoBean")
 public class ControladorMedicoBean implements Controlador {
-    private RepositorioSistema repositorioSistema = null;
-    private RepositorioMedico repositorio = null;
+   
+    private DaoMedico repositorio = null;
     private Medico medicos;
-    private Sistema sistemas;
+    
 
     public ControladorMedicoBean() {
 
@@ -35,34 +34,19 @@ public class ControladorMedicoBean implements Controlador {
 
     @PostConstruct
     public void Inicializar() {
-        repositorioSistema = new RepositorioSistema();
-        repositorio = new RepositorioMedico();
+        
+        repositorio = new DaoMedico();
         medicos = new Medico();
-        sistemas = new Sistema();
+     
 
     }
 
-    public RepositorioSistema getRepositorioSistema() {
-        return repositorioSistema;
-    }
-
-    public void setRepositorioSistema(RepositorioSistema repositorioSistema) {
-        this.repositorioSistema = repositorioSistema;
-    }
-
-    public Sistema getSistemas() {
-        return sistemas;
-    }
-
-    public void setSistemas(Sistema sistemas) {
-        this.sistemas = sistemas;
-    }
     
-    public RepositorioMedico getRepositorio() {
+    public DaoMedico getRepositorio() {
         return repositorio;
     }
 
-    public void setRepositorio(RepositorioMedico repositorio) {
+    public void setRepositorio(DaoMedico repositorio) {
         this.repositorio = repositorio;
     }
 
@@ -76,26 +60,28 @@ public class ControladorMedicoBean implements Controlador {
 
     @Override
     public String inserir() {
-        sistemas = repositorioSistema.recuperar(sistemas.getId());
-        medicos.setSistema(sistemas);
+       // sistemas = repositorioSistema.recuperar(sistemas.getId());
+       // medicos.setSistema(sistemas);
         repositorio.inserir(medicos);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("O médico " + medicos.getNome() + " foi cadastrado com sucesso!!!"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(" Médico(a) " + medicos.getNome() + " foi cadastrado(a) com sucesso!!!"));
+        this.medicos = new Medico();
         return "index.xhtml";
     }
 
     @Override
     public String alterar() {
         repositorio.alterar(medicos);
-         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Médico "+ medicos.getNome() +" alterado com sucesso!!!"));
-        return "index.xhtml";
+         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Médico(a) "+ medicos.getNome() +" dados alterados com sucesso!!!"));
+         this.medicos = new Medico();
+        return "menuMedico.xhtml";
     }
 
     @Override
     public String deletar() {
         //medicos = recuperar(medicos.getCrm());
         repositorio.excluir(medicos);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage ("O médico " + medicos.getNome() +" foi deletado com sucesso!"));
-        return "index.xhtml";
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage (" Médico " + medicos.getNome() +" foi deletado com sucesso!"));
+        return "menuMedico.xhtml";
     }
 
     @Override

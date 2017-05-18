@@ -7,6 +7,7 @@ package model;
 
 import model.Hibernete.HibernateUtil;
 import javax.persistence.EntityManager;
+import model.Dao.DaoMedico;
 
 /**
  *
@@ -18,26 +19,17 @@ public class TestandoMedico {
 
     public static void main(String[] args) {
 
-        manager = HibernateUtil.getManager();
-        Sistema s = new Sistema();
-        Medico m = new Medico();
-
-        s.setLogin("Izaquiascavalcante@gmail.com");
-        s.setSenha("izaquias1222");
-
-        m.setNome("Izaquias cavalcante");
-        m.setIdade(32);
-        m.setEspecialidade("Dermatologista");
-        m.setSalario(2000);
-        m.setSistema(s);
-
-        manager.getTransaction().begin();
-        manager.persist(m);
-        manager.persist(s);
+        manager = HibernateUtil.getInstance().getFactory().createEntityManager();
         
-        manager.getTransaction().commit();
-        manager.close();
-
+        //Verifica a existência ou não do registro passado!
+        DaoMedico rm= new DaoMedico();
+        Medico m=rm.recuperarMedicoEmailSenha("dracula@hotmail.com", "dracula39");
+        if(m!=null){
+            System.out.print(m.getNome());
+        }else{
+            System.out.print("não existe");
+        }
+        
     }
 
 }
