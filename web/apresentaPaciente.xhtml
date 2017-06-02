@@ -78,7 +78,7 @@
             
              <p:confirmDialog message="Deseja realmente deletar este paciente?" visible="false" id="dialDeleta" widgetVar="widDialDeleta">
                  <p:commandButton id="butao" value="sim"  action="#{PacienteBean.deletar()}" update=':apresentaPacientes:tabela'
-                                  style="color: green"  oncomplete="PF('widDialDeleta').hide()" />
+                                  style="left: 15%; color: green"  oncomplete="PF('widDialDeleta').hide()" />
                  <p:commandButton value="não" style="position: relative; left: 50%; color: red" oncomplete="PF('widDialDeleta').hide()" />
             </p:confirmDialog>
             

@@ -4,10 +4,16 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
-    
-    <context-param>
+<!--  Tema PrimeFaces Vermelho-->
+<!--    <context-param>
         <param-name>primefaces.THEME</param-name>
         <param-value>blitzer</param-value>
+    </context-param>-->
+    
+    <!--  Tema PrimeFaces Azul-->
+     <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>start</param-value>
     </context-param>
     
     <servlet>
